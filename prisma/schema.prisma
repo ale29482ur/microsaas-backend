@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb" // ou postgresql
+  url      = env("DATABASE_URL")
+}
+enum StatusPedido{
+  EM_ANALISE_TECNICA
+  VALIDADO
+  EM_REPARO
+  AGUARDANDO_PAGAMENTO
+  PAGO
+  FINALIZADO
+}
+model Users {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  nome String
+  telefone String? @unique
+  email String @unique
+  senha String @unique
+  pedidos Pedidos[]
+  createdat DateTime @default(now())
+}
+model Pedidos{
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+
+  categoria String
+  nomecliente String
+  marca String
+  modelo String
+
+  problemainformado String
+  observacoes String?
+
+  status StatusPedido @default(EM_ANALISE_TECNICA)
+
+  userId String @db.ObjectId
+  usuario Users @relation(fields: [userId], references: [id])
+
+  createdat DateTime @default(now())
+}
