@@ -7,9 +7,10 @@ export async function CreateOrder({
   problemainformado,
   observacoes,
   nomecliente,
-  status,
   userId,
 }) {
+
+
   const Pedidos = await prisma.Pedidos.create({
     data: {
       categoria,
@@ -18,7 +19,6 @@ export async function CreateOrder({
       problemainformado,
       observacoes,
       nomecliente,
-      status,
       usuario: {
         connect: {
           id: userId
@@ -29,7 +29,7 @@ export async function CreateOrder({
   return Pedidos
 }
 
-export async function UpdateOrder(id) {
+export async function UpdateOrder(id, userId) {
   const status = {
     EM_ANALISE_TECNICA: "VALIDADO",
     VALIDADO: "EM_REPARO",
@@ -38,9 +38,10 @@ export async function UpdateOrder(id) {
     PAGO: "FINALIZADO",
   };
 
-  const Pedidos = await prisma.Pedidos.findUnique({
+  const Pedidos = await prisma.Pedidos.findFirst({
     where: {
       id,
+      userId
     },
   });
 
@@ -60,15 +61,81 @@ export async function UpdateOrder(id) {
   return updatestatus
 }
 
-export async function DeleteOrder(id) {
-  const Pedidos = await prisma.Pedidos.delete({
+export async function DeleteOrder(id, userId) {
+  const verify = await prisma.Pedidos.findFirst({
     where: {
       id,
-    },
+      userId
+    }
+  })
+
+  if(!verify){
+    throw new Error("Pedido não encontrado")
+  }
+
+  const Pedidos = await prisma.Pedidos.delete({
+    where: {
+      id
+    }
   });
 }
 
-export async function Getorders() {
-  const pedidos = await prisma.Pedidos.findMany();
+export async function CancelOrder(id, userId){
+
+  const verify = await prisma.Pedidos.findFirst({
+    where: {
+      id,
+      userId
+    }
+  })
+
+  if(!verify){
+    throw new Error("Pedido não encontrado")
+  }
+
+  const Cancel = await prisma.Pedidos.update({
+    where: {
+      id
+    },
+    data: {
+      status: "CANCELADO"
+    }
+  })
+  return Cancel
+}
+
+export async function EditOrder(id, userId, dados){
+  const verify = await prisma.Pedidos.findFirst({
+    where: {
+      id,
+      userId
+    }
+  })
+
+  if(!verify){
+    throw new Error("Pedido não encontrado")
+  }
+
+  const update = await prisma.Pedidos.update({
+    where: {
+      id
+    },
+    data: {
+      categoria: dados.categoria,
+      nomecliente: dados.nomecliente,
+      marca: dados.marca,
+      modelo: dados.modelo,
+      problemainformado: dados.problemainformado,
+      observacoes: dados.observacoes
+    }
+  })
+}
+
+export async function Getorders(userId) {
+  const pedidos = await prisma.Pedidos.findMany({
+    where: {
+      userId
+    }
+  });
   return pedidos
 }

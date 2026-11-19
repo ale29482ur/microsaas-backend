@@ -23,9 +23,49 @@ export async function LoginUser(req, res) {
   }
 }
 
+export async function mudarInfos(req, res){
+  try{
+    await userService.mudarInfos(
+      req.user.id,
+      req.body.Novonome,
+      req.body.Novotelefone,
+      req.body.Novocargo
+    )
+    return res.status(201).json({message:"Informações alteradas com sucesso"})
+  } catch(error){
+    return res.status(500).json({message: "Erro ao mudar informações"})
+  }
+} 
+
+export async function MudarSenha(req, res) {
+  try{
+    await userService.MudarSenha(
+      req.body.senha,
+      req.body.novaSenha,
+      req.user.id
+    )
+    return res.status(201).json({message:"Senha alterada com sucesso"})
+  } catch (error) {
+    return res.status(500).json({message: "Erro na mudança de senha."})
+  }
+}
+
+  export async function mudarEmail(req, res){
+    try{
+      await userService.mudarEmail(
+        req.body.novoemail,
+        req.body.senha,
+        req.user.id
+      )
+      return res.status(201).json({message:"Email alterado com sucesso !"})
+    } catch (error){
+    return res.status(500).json({message: "Erro ao alterar o email !"})
+  }
+}
+ 
 export async function DeleteUser(req, res) {
   try {
-    await userService.DeleteUser(req.params.id);
+    await userService.DeleteUser(req.user.id);
 
     return res.status(200).json({
       message: "Usuário deletado",

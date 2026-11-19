@@ -13,13 +13,15 @@ enum StatusPedido{
   AGUARDANDO_PAGAMENTO
   PAGO
   FINALIZADO
+  CANCELADO
 }
 model Users {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   nome String
-  telefone String? @unique
+  telefone String @unique
+  cargo String 
   email String @unique
-  senha String @unique
+  senha String 
   pedidos Pedidos[]
   createdat DateTime @default(now())
 }
