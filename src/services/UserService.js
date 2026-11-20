@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export async function CreateUser({ nome, telefone, cargo, email, senha }) {
 
-   const emailNormalizado = email.trim().toLowerCase();
+  const emailNormalizado = email.trim().toLowerCase();
 
   const emailexistente = await prisma.Users.findUnique({
     where: {
@@ -14,6 +14,16 @@ export async function CreateUser({ nome, telefone, cargo, email, senha }) {
 
   if(emailexistente){
     throw new Error("Email já cadastrado.")
+  }
+
+  const TelefoneExistente = await prisma.Users.findUnique({
+    where: {
+      telefone
+    }
+  })
+
+  if(TelefoneExistente){
+    throw new Error("Telefone já cadastrado")
   }
 
   const senhaHash = await bcrypt.hash(senha, 10);
