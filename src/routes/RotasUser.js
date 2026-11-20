@@ -1,13 +1,15 @@
 import { Router } from "express";
 import { CreateUser, DeleteUser, Getuser, LoginUser, mudarEmail, mudarInfos, MudarSenha} from "../controller/UserController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { validate } from "../middlewares/Validate.js";
+import { CreateUserSchema } from "../../schemas/CreateUser.js";
 
 
 
 
 const router = Router();
  
-router.post("/", CreateUser)
+router.post("/",validate(CreateUserSchema), CreateUser)
 router.post("/login", LoginUser)
 router.post("/mudarsenha", authMiddleware, MudarSenha)
 router.post("/mudaremail", authMiddleware, mudarEmail)
