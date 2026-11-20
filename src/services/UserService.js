@@ -143,7 +143,8 @@ export async function mudarEmail(novoEmail, senha, userId){
     throw new Error("Email incorreto")
   }
 
-  const update = await prisma.Users.update({
+  
+  await prisma.Users.update({
     where: {
       id: userId
     },
@@ -165,7 +166,7 @@ export async function mudarInfos(userId, Novonome, Novotelefone, Novocargo){
     throw new Error("Usuário não encontrado")
   }
 
-  const update = await prisma.Users.update({
+  await prisma.Users.update({
     where: {
       id: userId
     },

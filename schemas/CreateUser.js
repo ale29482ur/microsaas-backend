@@ -23,9 +23,16 @@ export const CreateUserSchema = z.object({
     email: z.string()
     .trim()
     .email("Informe um email válido."),
+   
     
     senha: z.string()
     .trim()
     .min(5, "Sua senha deve conter no mínimo 5 caracteres !")
     .max(120, "Sua senha deve conter menos de 100 caracteres !")
+    .regex(/[A-Z]/, "A senha deve conter uma letra maiúscula")
+    .regex(/[a-z]/, "A senha deve conter uma letra minúscula")
+    .regex(/[0-9]/, "A senha deve conter um número")
+    
+    //para caracteres especiais
+    .regex(/[^A-Za-z0-9]/, "A senha precisa ter um caractere especial.")
 })
