@@ -1,6 +1,7 @@
 import prisma from "../prisma/prismaClient.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { AppError } from "../../Errors/AppError.js";
 
 export async function CreateUser({ nome, telefone, cargo, email, senha }) {
 
@@ -13,7 +14,7 @@ export async function CreateUser({ nome, telefone, cargo, email, senha }) {
   })
 
   if(emailexistente){
-    throw new Error("Email já cadastrado.")
+    throw new AppError("Email já cadastrado.", 409)
   }
 
   const TelefoneExistente = await prisma.Users.findUnique({
@@ -23,7 +24,7 @@ export async function CreateUser({ nome, telefone, cargo, email, senha }) {
   })
 
   if(TelefoneExistente){
-    throw new Error("Telefone já cadastrado")
+    throw new AppError("Telefone já cadastrado.", 409)
   }
 
   const senhaHash = await bcrypt.hash(senha, 10);
