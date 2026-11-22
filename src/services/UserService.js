@@ -58,11 +58,11 @@ export async function LoginUser({email, senha}) {
     },
   });
   if (!find) {
-    throw new Error("Email ou senha não encontrados");
+    throw new AppError("Email ou senha não encontrados", 401);
   }
   const verificar_senha = await bcrypt.compare(senha, find.senha);
   if (!verificar_senha) {
-    throw new Error("Email ou senha não encontrados");
+    throw new AppError("Email ou senha não encontrados", 401);
   }
 
   const token = jwt.sign(
@@ -82,7 +82,7 @@ export async function DeleteUser(userId) {
   })
 
   if(!verify){
-    throw new Error("Usuário não encontrado")
+    throw new AppError("Usuário não encontrado", 404)
   }
 
   await prisma.Users.delete({
@@ -99,7 +99,7 @@ export async function MudarSenha(senha, novaSenha, userId){
     }
   })
   if(!user){
-    throw new Error("Usuário não encontrado")
+    throw new AppError("Usuário não encontrado", 404)
   }
 
   const compararSenha = await bcrypt.compare(
@@ -108,7 +108,7 @@ export async function MudarSenha(senha, novaSenha, userId){
   )
 
   if(!compararSenha){
-    throw new Error("Senha atual incorreta")
+    throw new AppError("Senha atual incorreta", 401)
   }
 
   const novasenhaHash = await bcrypt.hash(
@@ -132,7 +132,7 @@ export async function mudarEmail(novoEmail, senha, userId){
     }
   })
   if(!users){
-    throw new Error("Usuário não encontrado")
+    throw new AppError("Usuário não encontrado", 404)
   }
 
   const compararsenha = await bcrypt.compare(
@@ -141,7 +141,7 @@ export async function mudarEmail(novoEmail, senha, userId){
   )
 
   if(!compararsenha){
-    throw new Error("Senha incorreta")
+    throw new AppError("Senha incorreta", 401)
   } 
 
   const findemail = await prisma.Users.findUnique({
@@ -151,7 +151,7 @@ export async function mudarEmail(novoEmail, senha, userId){
   })
 
   if(findemail){
-    throw new Error("Email incorreto")
+    throw new AppError("Email incorreto", 401)
   }
 
   
@@ -174,7 +174,7 @@ export async function mudarInfos(userId, Novonome, Novotelefone, Novocargo){
   })
 
   if(!verify){
-    throw new Error("Usuário não encontrado")
+    throw new AppError("Usuário não encontrado", 404)
   }
 
   await prisma.Users.update({
@@ -208,6 +208,3 @@ export async function getUserById(userId) {
   return users
 }
 
-export async function editarPedidos(categoria, nomecliente, marca, modelo, problemainformado, observacoes){
-  
-}
