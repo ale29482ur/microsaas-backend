@@ -2,11 +2,11 @@ import { Router } from "express";
 import { CreateUser, DeleteUser, Getuser, LoginUser, mudarEmail, mudarInfos, MudarSenha} from "../controller/UserController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { validate } from "../middlewares/Validate.js";
-import { CreateUserSchema } from "../../schemas/CreateUser.js";
-import { LoginUserSchema } from "../../schemas/LoginUser.js";
-import { ChangePasswordSchema } from "../../schemas/ChangePassword.js";
-import { ChangeEmailSchema } from "../../schemas/ChangeEmail.js";
-import { ChangeInfosSchema } from "../../schemas/ChangeInfos.js";
+import { CreateUserSchema } from "../../schemas/Users/CreateUser.js";
+import { LoginUserSchema } from "../../schemas/Users/LoginUser.js";
+import { ChangePasswordSchema } from "../../schemas/Users/ChangePassword.js";
+import { ChangeEmailSchema } from "../../schemas/Users/ChangeEmail.js";
+import { ChangeInfosSchema } from "../../schemas/Users/ChangeInfos.js";
 
 
 const router = Router();
