@@ -6,5 +6,5 @@ export const ChangePasswordSchema = z.object({
 
     novasenha: z.string()
     .min(5, "Sua senha deve conter no mínimo 5 caracteres !")
-    .max(120, "Sua senha deve conter mo máximo 120 caracteres !")
+    .max(120, "Sua senha deve conter no máximo 120 caracteres !")
 })

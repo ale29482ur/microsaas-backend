@@ -22,8 +22,8 @@ export const CreateUserSchema = z.object({
 
     email: z.string()
     .trim()
-    .email("Informe um email válido."),
-   
+    .email("Informe um email válido.")
+    .transform((email) => email.toLowerCase()),
     
     senha: z.string()
     .trim()

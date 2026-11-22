@@ -151,7 +151,7 @@ export async function mudarEmail(novoEmail, senha, userId){
   })
 
   if(findemail){
-    throw new AppError("Email incorreto", 401)
+    throw new AppError("Email já cadastrado", 409)
   }
 
   
