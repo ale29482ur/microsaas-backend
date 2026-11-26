@@ -46,7 +46,7 @@ export async function UpdateOrder(id, userId) {
   });
 
   if(!Pedidos){
-    throw new Error("Pedido não encontrado")
+    throw new AppError("Pedido não encontrado", 404)
   }
   const novostatus = status[Pedidos.status];
 
@@ -70,7 +70,7 @@ export async function DeleteOrder(id, userId) {
   })
 
   if(!verify){
-    throw new Error("Pedido não encontrado")
+    throw new AppError("Pedido não encontrado", 404)
   }
 
   const Pedidos = await prisma.Pedidos.delete({
@@ -90,7 +90,7 @@ export async function CancelOrder(id, userId){
   })
 
   if(!verify){
-    throw new Error("Pedido não encontrado")
+    throw new AppError("Pedido não encontrado", 404)
   }
 
   const Cancel = await prisma.Pedidos.update({
@@ -113,7 +113,7 @@ export async function EditOrder(id, userId, dados){
   })
 
   if(!verify){
-    throw new Error("Pedido não encontrado")
+    throw new AppError("Pedido não encontrado", 404)
   }
 
   const update = await prisma.Pedidos.update({
