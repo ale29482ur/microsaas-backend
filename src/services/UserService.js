@@ -126,6 +126,9 @@ export async function MudarSenha(senha, novaSenha, userId){
 }
 
 export async function mudarEmail(novoEmail, senha, userId){
+
+  const emailNormalizado = novoEmail.trim().toLowerCase()
+
   const users = await prisma.Users.findUnique({
     where: {
       id: userId
@@ -146,7 +149,7 @@ export async function mudarEmail(novoEmail, senha, userId){
 
   const findemail = await prisma.Users.findUnique({
     where: {
-      email: novoEmail
+      email: emailNormalizado
     }
   })
 
@@ -160,7 +163,7 @@ export async function mudarEmail(novoEmail, senha, userId){
       id: userId
     },
     data: {
-      email: novoEmail
+      email: emailNormalizado
     }
   })
 }
