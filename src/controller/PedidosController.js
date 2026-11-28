@@ -1,5 +1,6 @@
 import prisma from "../prisma/prismaClient.js";
 import * as pedidosService from "../services/PedidosService.js";
+import { AppError } from "../../Errors/AppError.js";
 
 export async function CreateOrder(req, res) {
   const pedido = await pedidosService.CreateOrder({
@@ -28,7 +29,7 @@ export async function DeleteOrder(req, res) {
 }
 
 export async function CancelOrder(req, res) {
-  await pedidosService.CancelOrder(req.params.id, req.params.id);
+  await pedidosService.CancelOrder(req.params.id, req.user.id);
   return res.status(200).json({
     message: "Pedido cancelado com sucesso !",
   });

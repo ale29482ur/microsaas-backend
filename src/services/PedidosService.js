@@ -1,3 +1,4 @@
+import { AppError } from "../../Errors/AppError.js";
 import prisma from "../prisma/prismaClient.js";
 
 export async function CreateOrder({
@@ -49,6 +50,10 @@ export async function UpdateOrder(id, userId) {
     throw new AppError("Pedido não encontrado", 404)
   }
   const novostatus = status[Pedidos.status];
+
+  if(!novostatus){
+    throw new AppError("Não foi possivel avançar o status desse pedido.", 409)
+  }
 
   const updatestatus = await prisma.Pedidos.update({
     where: {
