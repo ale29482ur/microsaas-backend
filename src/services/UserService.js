@@ -9,7 +9,7 @@ export async function CreateUser({ nome, telefone, cargo, email, senha }) {
 
   const emailexistente = await prisma.Users.findUnique({
     where: {
-      email
+      email: emailNormalizado
     }
   })
 
